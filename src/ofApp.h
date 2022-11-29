@@ -21,5 +21,6 @@ class ofApp : public ofBaseApp{
 		int generation = 0;
 		ofTrueTypeFont uiFont;
 
-		ClassyButton playButton{ Coordinate2D{static_cast<float>(ofGetWidth() / 1.2), 100}, "pauseButtonStatic.png", "pauseButtonHover.png" };
+		ClassyButton playButton{ Coordinate2D{900, 100}, "pauseButtonStatic.png", "pauseButtonHover.png" };
+		ClassyButton stepButton{ Coordinate2D{100, 900}, "nextFrameButtonStatic.png","nextFrameButtonHover.png" };
 };

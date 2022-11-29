@@ -74,6 +74,7 @@ void ofApp::draw() {
 		ofDrawLine(i * gridWidth, 0, i * gridWidth, screenHeight);
 	}
 	playButton.draw();
+	stepButton.draw();
 }
 
 //--------------------------------------------------------------
@@ -82,6 +83,7 @@ void ofApp::keyPressed(int key){
 
 void ofApp::mouseMoved(int x, int y) {
 	playButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
+	stepButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
 }
 
 //--------------------------------------------------------------
@@ -90,6 +92,10 @@ void ofApp::mouseReleased(int x, int y, int button) {
 	{
 		ofSetFrameRate(1);
 		playing = !playing;
+	}
+	if(stepButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
+	{
+		processCells();
 	}
 }
 
