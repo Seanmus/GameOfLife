@@ -15,4 +15,6 @@ class ofApp : public ofBaseApp{
 		void processCells();
 		bool mouseClicked;
 		bool playing = false;
+		int generation = 0;
+		ofTrueTypeFont uiFont;
 };

@@ -11,6 +11,7 @@ std::vector<std::vector<bool> > cellGrid(
 
 void ofApp::setup() {
 	ofBackground(255);
+	uiFont.loadFont("Sigmar.ttf", 30);
 }
 
 //--------------------------------------------------------------
@@ -31,6 +32,8 @@ void ofApp::draw() {
 	int gridWidth = screenWidth / columns;
 	int gridHeight = screenHeight / rows;
 
+	const std::string generationString = "Generation: " + std::to_string(generation);
+	uiFont.drawString(generationString, 50, 50);
 
 	ofSetColor(0);
 	//if (!mouseInScreen) { return; }
@@ -191,6 +194,7 @@ void ofApp::processCells()
 			}
 		}
 	}
+	generation++;
 	cellGrid = cellGridCopy;
 }
 
