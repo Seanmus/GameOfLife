@@ -22,7 +22,7 @@ ClassyButton::ClassyButton(const Coordinate2D coord, std::string restingImagePat
 /// <param name="mouseCoords">The current position of the mouse.</param>
 void ClassyButton::checkHover(Coordinate2D mouseCoords)
 {
-	if (checkCollision(mouseCoords))
+	if (checkClick(mouseCoords))
 	{
 		currentImage = hoverImage;
 	}
@@ -43,7 +43,7 @@ void ClassyButton::draw()
 /// Checks collision against the provided coordinates
 /// </summary>
 /// <param name="mouseCoords">The current position of the mouse.</param>
-bool ClassyButton::checkCollision(Coordinate2D mouseCoords) const
+bool ClassyButton::checkClick(Coordinate2D mouseCoords) const
 {
 	if (mouseCoords.x >= coord.x - currentImage.getWidth() / 2 && mouseCoords.x <= coord.x + currentImage.getWidth() / 2
 		&& mouseCoords.y >= coord.y - currentImage.getHeight() / 2 && mouseCoords.y <= coord.y + currentImage.getHeight() / 2)

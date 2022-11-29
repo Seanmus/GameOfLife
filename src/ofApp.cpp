@@ -35,6 +35,7 @@ void ofApp::draw() {
 	const std::string generationString = "Generation: " + std::to_string(generation);
 	uiFont.drawString(generationString, 50, 50);
 
+
 	ofSetColor(0);
 	//if (!mouseInScreen) { return; }
 	for (int i = 0; i < rows; i++) {
@@ -72,11 +73,20 @@ void ofApp::draw() {
 	for (int i = 1; i <= columns; i++) {
 		ofDrawLine(i * gridWidth, 0, i * gridWidth, screenHeight);
 	}
+	playButton.draw();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-	if(key == 32)
+}
+
+void ofApp::mouseMoved(int x, int y) {
+	playButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
+}
+
+//--------------------------------------------------------------
+void ofApp::mouseReleased(int x, int y, int button) {
+	if (playButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
 	{
 		ofSetFrameRate(1);
 		playing = !playing;

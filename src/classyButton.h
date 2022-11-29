@@ -8,7 +8,7 @@ public:
 	ClassyButton(const Coordinate2D coord, std::string restingImagePath, std::string hoverImagePath);
 	void checkHover(Coordinate2D mouseCoords);
 	void draw();
-	bool checkCollision(Coordinate2D mouseCoords) const;
+	bool checkClick(Coordinate2D mouseCoords) const;
 private:
 	Coordinate2D coord;
 	ofImage hoverImage;
