@@ -76,8 +76,7 @@ void ofApp::keyPressed(int key){
 	if(key == 32)
 	{
 		ofSetFrameRate(1);
-		playing = true;
-		std::cout << "Playing";
+		playing = !playing;
 	}
 }
 
