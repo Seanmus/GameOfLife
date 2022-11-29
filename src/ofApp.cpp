@@ -4,7 +4,7 @@ const int rows = 65;
 const int columns = 50;
 
 //Cannot be declared in header like this must be made global
-std::vector<std::vector<bool> > image(
+std::vector<std::vector<bool> > cellGrid(
 	rows,
 	std::vector<bool>(columns, false));
 
@@ -36,7 +36,7 @@ void ofApp::draw() {
 	//if (!mouseInScreen) { return; }
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
-			if (image[i][j] == true)
+			if (cellGrid[i][j] == true)
 			{
 				//Draws the pixels
 				ofDrawRectangle(j * gridWidth, i * gridHeight, gridWidth, gridHeight);
@@ -45,13 +45,13 @@ void ofApp::draw() {
 				if (ofGetMousePressed() && mouseClicked == false)
 				{
 					mouseClicked = true;
-					if (image[i][j] == false)
+					if (cellGrid[i][j] == false)
 					{
-						image[i][j] = true;
+						cellGrid[i][j] = true;
 					}
 					else
 					{
-						image[i][j] = false;
+						cellGrid[i][j] = false;
 					}
 				}
 				else if (!ofGetMousePressed())
@@ -82,7 +82,102 @@ void ofApp::keyPressed(int key){
 
 void ofApp::processCells()
 {
+	int screenWidth = ofGetWidth();
+	int screenHeight = ofGetHeight();
+	int mouseX = ofGetMouseX();
+	int mouseY = ofGetMouseY();
 
+	int gridWidth = screenWidth / columns;
+	int gridHeight = screenHeight / rows;
+
+	std::vector<std::vector<bool> > cellGridCopy = cellGrid;
+
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
+			int aliveInRadius = 0;
+
+			//Above
+			if(i - 1 > 0)
+			{
+				if(cellGrid[i-1][j] == true)
+				{
+					aliveInRadius++;
+				} 
+			}
+
+			//Below
+			if(i + 1 < rows)
+			{
+				if (cellGrid[i + 1][j] == true)
+				{
+					aliveInRadius++;
+				}
+			}
+
+			//Left
+			if(j - 1 > 0)
+			{
+				if (cellGrid[i][j - 1] == true)
+				{
+					aliveInRadius++;
+				}
+			}
+
+			//Right
+			if(j + 1< columns)
+			{
+				if (cellGrid[i][j + 1] == true)
+				{
+					aliveInRadius++;
+				}
+			}
+
+			//AboveLeft
+			if (i - 1 > 0 && j - 1 > 0)
+			{
+				if (cellGrid[i - 1][j-1] == true)
+				{
+					aliveInRadius++;
+				}
+			}
+			//AboveRight
+			if (i - 1 > 0 && j + 1 < columns)
+			{
+				if (cellGrid[i - 1][j + 1] == true)
+				{
+					aliveInRadius++;
+				}
+			}
+
+			//BelowLeft
+			if (i + 1 < rows && j - 1 > 0)
+			{
+				if (cellGrid[i + 1][j - 1] == true)
+				{
+					aliveInRadius++;
+				}
+			}
+
+			//BelowRight
+			if (i + 1 < rows && j + 1 < columns)
+			{
+				if (cellGrid[i + 1][j + 1] == true)
+				{
+					aliveInRadius++;
+				}
+			}
+
+			if (cellGrid[i][j] == true)
+			{
+
+			}
+			else
+			{
+				
+			}
+		}
+	}
 }
+
 
 
