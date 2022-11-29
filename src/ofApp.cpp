@@ -75,6 +75,7 @@ void ofApp::draw() {
 void ofApp::keyPressed(int key){
 	if(key == 32)
 	{
+		ofSetFrameRate(1);
 		playing = true;
 		std::cout << "Playing";
 	}
@@ -95,9 +96,18 @@ void ofApp::processCells()
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
 			int aliveInRadius = 0;
+			bool aboveCell = i - 1 >= 0;
+			bool belowCell = i + 1 < rows;
+			bool leftCell = j - 1 >= 0;
+			bool rightCell = j + 1 < columns;
+			bool aboveLeftCell = i - 1 >= 0 && j - 1 >= 0;
+			bool aboveRightCell = i - 1 >= 0 && j + 1 < columns;
+			bool belowLeftCell = i + 1 < rows && j - 1 >= 0;
+			bool belowRightCell = i + 1 < rows && j + 1 < columns;
+
 
 			//Above
-			if(i - 1 > 0)
+			if(aboveCell)
 			{
 				if(cellGrid[i-1][j] == true)
 				{
@@ -106,7 +116,7 @@ void ofApp::processCells()
 			}
 
 			//Below
-			if(i + 1 < rows)
+			if(belowCell)
 			{
 				if (cellGrid[i + 1][j] == true)
 				{
@@ -115,7 +125,7 @@ void ofApp::processCells()
 			}
 
 			//Left
-			if(j - 1 > 0)
+			if(leftCell)
 			{
 				if (cellGrid[i][j - 1] == true)
 				{
@@ -124,7 +134,7 @@ void ofApp::processCells()
 			}
 
 			//Right
-			if(j + 1< columns)
+			if(rightCell)
 			{
 				if (cellGrid[i][j + 1] == true)
 				{
@@ -133,7 +143,7 @@ void ofApp::processCells()
 			}
 
 			//AboveLeft
-			if (i - 1 > 0 && j - 1 > 0)
+			if (aboveLeftCell)
 			{
 				if (cellGrid[i - 1][j-1] == true)
 				{
@@ -141,7 +151,7 @@ void ofApp::processCells()
 				}
 			}
 			//AboveRight
-			if (i - 1 > 0 && j + 1 < columns)
+			if (aboveRightCell)
 			{
 				if (cellGrid[i - 1][j + 1] == true)
 				{
@@ -150,7 +160,7 @@ void ofApp::processCells()
 			}
 
 			//BelowLeft
-			if (i + 1 < rows && j - 1 > 0)
+			if (belowLeftCell)
 			{
 				if (cellGrid[i + 1][j - 1] == true)
 				{
@@ -159,7 +169,7 @@ void ofApp::processCells()
 			}
 
 			//BelowRight
-			if (i + 1 < rows && j + 1 < columns)
+			if (belowRightCell)
 			{
 				if (cellGrid[i + 1][j + 1] == true)
 				{
