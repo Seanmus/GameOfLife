@@ -167,16 +167,22 @@ void ofApp::processCells()
 				}
 			}
 
-			if (cellGrid[i][j] == true)
+			if (aliveInRadius < 2)
 			{
+				cellGridCopy[i][j] = false;
 
 			}
-			else
+			if(aliveInRadius == 3)
 			{
-				
+				cellGridCopy[i][j] = true;
+			}
+			if(aliveInRadius > 3)
+			{
+				cellGridCopy[i][j] = false;
 			}
 		}
 	}
+	cellGrid = cellGridCopy;
 }
 
 
