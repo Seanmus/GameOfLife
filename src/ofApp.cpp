@@ -33,16 +33,12 @@ void ofApp::draw() {
 	int gridWidth = screenWidth / columns;
 	int gridHeight = screenHeight / rows;
 
-	const std::string generationString = "Generation: " + std::to_string(generation);
-	uiFont.drawString(generationString, 50, 50);
-
-
-	ofSetColor(0);
+	ofSetColor(0,255,0);
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
 			if (cellGrid[i][j] == CellState::alive)
 			{
-				//Draws the pixels
+				//Draws the live cells
 				ofDrawRectangle(j * gridWidth, i * gridHeight, gridWidth, gridHeight);
 			}
 			if (mouseX > gridWidth * j && mouseX < gridWidth * (j + 1) && mouseY > gridHeight * i && mouseY < gridHeight * (i + 1)) {
@@ -76,6 +72,8 @@ void ofApp::draw() {
 	playButton.draw();
 	stepButton.draw();
 	randomButton.draw();
+	const std::string generationString = "Generation: " + std::to_string(generation);
+	uiFont.drawString(generationString, 50, 50);
 }
 
 //--------------------------------------------------------------
