@@ -37,7 +37,6 @@ void ofApp::draw() {
 
 
 	ofSetColor(0);
-	//if (!mouseInScreen) { return; }
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
 			if (cellGrid[i][j] == true)
@@ -75,6 +74,7 @@ void ofApp::draw() {
 	}
 	playButton.draw();
 	stepButton.draw();
+	randomButton.draw();
 }
 
 //--------------------------------------------------------------
@@ -84,6 +84,7 @@ void ofApp::keyPressed(int key){
 void ofApp::mouseMoved(int x, int y) {
 	playButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
 	stepButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
+	randomButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
 }
 
 //--------------------------------------------------------------
@@ -96,6 +97,10 @@ void ofApp::mouseReleased(int x, int y, int button) {
 	if(stepButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
 	{
 		processCells();
+	}
+	if (randomButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
+	{
+		randomizeCells();
 	}
 }
 
@@ -212,6 +217,23 @@ void ofApp::processCells()
 	}
 	generation++;
 	cellGrid = cellGridCopy;
+}
+
+void ofApp::randomizeCells()
+{
+	srand(time(NULL));
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
+			int randomNum = rand() % 100;
+			if (randomNum <= 40) {
+				cellGrid[i][j] = true;
+			}
+			else {
+				cellGrid[i][j] = false;
+			}
+
+		}
+	}
 }
 
 
