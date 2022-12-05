@@ -92,6 +92,9 @@ void ofApp::mouseReleased(int x, int y, int button) {
 	{
 		ofSetFrameRate(1);
 		playing = !playing;
+		if (!playing) {
+			ofSetFrameRate(60);
+		}
 	}
 	if(stepButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
 	{
