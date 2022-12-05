@@ -17,6 +17,7 @@ class ofApp : public ofBaseApp{
 
 		void processCells();
 		void randomizeCells();
+		void clearGrid();
 		bool mouseClicked;
 		bool playing = false;
 		int generation = 0;
