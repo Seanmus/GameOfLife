@@ -16,6 +16,8 @@ class ofApp : public ofBaseApp{
 		void mouseReleased(int x, int y, int button);
 
 		void processCells();
+		void randomizeCells();
+		void clearGrid();
 		bool mouseClicked;
 		bool playing = false;
 		int generation = 0;
@@ -23,4 +25,6 @@ class ofApp : public ofBaseApp{
 
 		ClassyButton playButton{ Coordinate2D{900, 100}, "pauseButtonStatic.png", "pauseButtonHover.png" };
 		ClassyButton stepButton{ Coordinate2D{100, 900}, "nextFrameButtonStatic.png","nextFrameButtonHover.png" };
+		ClassyButton randomButton{ Coordinate2D{900, 900}, "randomButtonStatic.png", "randomButtonHover.png" };
+
 };

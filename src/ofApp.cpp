@@ -3,10 +3,11 @@
 const int rows = 65;
 const int columns = 50;
 
+enum class CellState { alive, dead };
 //Cannot be declared in header like this must be made global
-std::vector<std::vector<bool> > cellGrid(
+std::vector<std::vector<CellState> > cellGrid(
 	rows,
-	std::vector<bool>(columns, false));
+	std::vector<CellState>(columns, CellState::dead));
 
 
 void ofApp::setup() {
@@ -37,10 +38,9 @@ void ofApp::draw() {
 
 
 	ofSetColor(0);
-	//if (!mouseInScreen) { return; }
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
-			if (cellGrid[i][j] == true)
+			if (cellGrid[i][j] == CellState::alive)
 			{
 				//Draws the pixels
 				ofDrawRectangle(j * gridWidth, i * gridHeight, gridWidth, gridHeight);
@@ -49,13 +49,13 @@ void ofApp::draw() {
 				if (ofGetMousePressed() && mouseClicked == false)
 				{
 					mouseClicked = true;
-					if (cellGrid[i][j] == false)
+					if (cellGrid[i][j] == CellState::dead)
 					{
-						cellGrid[i][j] = true;
+						cellGrid[i][j] = CellState::alive;
 					}
 					else
 					{
-						cellGrid[i][j] = false;
+						cellGrid[i][j] = CellState::dead;
 					}
 				}
 				else if (!ofGetMousePressed())
@@ -75,6 +75,7 @@ void ofApp::draw() {
 	}
 	playButton.draw();
 	stepButton.draw();
+	randomButton.draw();
 }
 
 //--------------------------------------------------------------
@@ -84,6 +85,7 @@ void ofApp::keyPressed(int key){
 void ofApp::mouseMoved(int x, int y) {
 	playButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
 	stepButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
+	randomButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
 }
 
 //--------------------------------------------------------------
@@ -97,6 +99,10 @@ void ofApp::mouseReleased(int x, int y, int button) {
 	{
 		processCells();
 	}
+	if (randomButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
+	{
+		randomizeCells();
+	}
 }
 
 void ofApp::processCells()
@@ -109,7 +115,7 @@ void ofApp::processCells()
 	int gridWidth = screenWidth / columns;
 	int gridHeight = screenHeight / rows;
 
-	std::vector<std::vector<bool> > cellGridCopy = cellGrid;
+	std::vector<std::vector<CellState> > cellGridCopy = cellGrid;
 
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
@@ -127,7 +133,7 @@ void ofApp::processCells()
 			//Above
 			if(aboveCell)
 			{
-				if(cellGrid[i-1][j] == true)
+				if(cellGrid[i-1][j] == CellState::alive)
 				{
 					aliveInRadius++;
 				} 
@@ -136,7 +142,7 @@ void ofApp::processCells()
 			//Below
 			if(belowCell)
 			{
-				if (cellGrid[i + 1][j] == true)
+				if (cellGrid[i + 1][j] == CellState::alive)
 				{
 					aliveInRadius++;
 				}
@@ -145,7 +151,7 @@ void ofApp::processCells()
 			//Left
 			if(leftCell)
 			{
-				if (cellGrid[i][j - 1] == true)
+				if (cellGrid[i][j - 1] == CellState::alive)
 				{
 					aliveInRadius++;
 				}
@@ -154,7 +160,7 @@ void ofApp::processCells()
 			//Right
 			if(rightCell)
 			{
-				if (cellGrid[i][j + 1] == true)
+				if (cellGrid[i][j + 1] == CellState::alive)
 				{
 					aliveInRadius++;
 				}
@@ -163,7 +169,7 @@ void ofApp::processCells()
 			//AboveLeft
 			if (aboveLeftCell)
 			{
-				if (cellGrid[i - 1][j-1] == true)
+				if (cellGrid[i - 1][j-1] == CellState::alive)
 				{
 					aliveInRadius++;
 				}
@@ -171,7 +177,7 @@ void ofApp::processCells()
 			//AboveRight
 			if (aboveRightCell)
 			{
-				if (cellGrid[i - 1][j + 1] == true)
+				if (cellGrid[i - 1][j + 1] == CellState::alive)
 				{
 					aliveInRadius++;
 				}
@@ -180,7 +186,7 @@ void ofApp::processCells()
 			//BelowLeft
 			if (belowLeftCell)
 			{
-				if (cellGrid[i + 1][j - 1] == true)
+				if (cellGrid[i + 1][j - 1] == CellState::alive)
 				{
 					aliveInRadius++;
 				}
@@ -189,7 +195,7 @@ void ofApp::processCells()
 			//BelowRight
 			if (belowRightCell)
 			{
-				if (cellGrid[i + 1][j + 1] == true)
+				if (cellGrid[i + 1][j + 1] == CellState::alive)
 				{
 					aliveInRadius++;
 				}
@@ -197,22 +203,50 @@ void ofApp::processCells()
 
 			if (aliveInRadius < 2)
 			{
-				cellGridCopy[i][j] = false;
+				cellGridCopy[i][j] = CellState::dead;
 
 			}
 			if(aliveInRadius == 3)
 			{
-				cellGridCopy[i][j] = true;
+				cellGridCopy[i][j] = CellState::alive;
 			}
 			if(aliveInRadius > 3)
 			{
-				cellGridCopy[i][j] = false;
+				cellGridCopy[i][j] = CellState::dead;
 			}
 		}
 	}
 	generation++;
 	cellGrid = cellGridCopy;
 }
+
+void ofApp::randomizeCells()
+{
+	srand(time(NULL));
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
+			int randomNum = rand() % 100 + 1;
+			if (randomNum <= 35) {
+				cellGrid[i][j] = CellState::alive;
+			}
+			else {
+				cellGrid[i][j] = CellState::dead;
+			}
+
+		}
+	}
+}
+
+void ofApp::clearGrid()
+{
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
+			cellGrid[i][j] = CellState::dead;
+		}
+	}
+}
+
+
 
 
 
