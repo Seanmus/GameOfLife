@@ -255,6 +255,7 @@ void ofApp::randomizeCells()
 /// </summary>
 void ofApp::clearGrid()
 {
+	generation = 0;
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
 			cellGrid[i][j] = CellState::dead;
