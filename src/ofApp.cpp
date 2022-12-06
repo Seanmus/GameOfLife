@@ -72,6 +72,7 @@ void ofApp::draw() {
 	playButton.draw();
 	stepButton.draw();
 	randomButton.draw();
+	clearButton.draw();
 	const std::string generationString = "Generation: " + std::to_string(generation);
 	uiFont.drawString(generationString, 50, 50);
 }
@@ -84,6 +85,7 @@ void ofApp::mouseMoved(int x, int y) {
 	playButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
 	stepButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
 	randomButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
+	clearButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
 }
 
 //--------------------------------------------------------------
@@ -103,6 +105,10 @@ void ofApp::mouseReleased(int x, int y, int button) {
 	if (randomButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
 	{
 		randomizeCells();
+	}
+	if (clearButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
+	{
+		clearGrid();
 	}
 }
 
