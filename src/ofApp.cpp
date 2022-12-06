@@ -25,50 +25,9 @@ void ofApp::update() {
 
 //--------------------------------------------------------------
 void ofApp::draw() {
-	int screenWidth = ofGetWidth();
-	int screenHeight = ofGetHeight();
-	int mouseX = ofGetMouseX();
-	int mouseY = ofGetMouseY();
-
-	int gridWidth = screenWidth / columns;
-	int gridHeight = screenHeight / rows;
-
-	ofSetColor(0,255,0);
-	for (int i = 0; i < rows; i++) {
-		for (int j = 0; j < columns; j++) {
-			if (cellGrid[i][j] == CellState::alive)
-			{
-				//Draws the live cells
-				ofDrawRectangle(j * gridWidth, i * gridHeight, gridWidth, gridHeight);
-			}
-			if (mouseX > gridWidth * j && mouseX < gridWidth * (j + 1) && mouseY > gridHeight * i && mouseY < gridHeight * (i + 1)) {
-				if (ofGetMousePressed() && mouseClicked == false)
-				{
-					mouseClicked = true;
-					if (cellGrid[i][j] == CellState::dead)
-					{
-						cellGrid[i][j] = CellState::alive;
-					}
-					else
-					{
-						cellGrid[i][j] = CellState::dead;
-					}
-				}
-				else if (!ofGetMousePressed())
-				{
-					mouseClicked = false;
-				}
-			}
-		}
-	}
-	//Draws the grid
+	drawCells();
+	drawGrid();
 	ofSetColor(128);
-	for (int i = 1; i <= rows; i++) {
-		ofDrawLine(0, i * gridHeight, screenWidth, i * gridHeight);
-	}
-	for (int i = 1; i <= columns; i++) {
-		ofDrawLine(i * gridWidth, 0, i * gridWidth, screenHeight);
-	}
 	playButton.draw();
 	stepButton.draw();
 	randomButton.draw();
@@ -98,20 +57,50 @@ void ofApp::mouseReleased(int x, int y, int button) {
 			ofSetFrameRate(60);
 		}
 	}
-	if(stepButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
+	else if(stepButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
 	{
 		processCells();
 	}
-	if (randomButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
+	else if (randomButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
 	{
 		randomizeCells();
 	}
-	if (clearButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
+	else if (clearButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
 	{
 		clearGrid();
 	}
+	else {
+		int screenWidth = ofGetWidth();
+		int screenHeight = ofGetHeight();
+		int mouseX = ofGetMouseX();
+		int mouseY = ofGetMouseY();
+
+		int gridWidth = screenWidth / columns;
+		int gridHeight = screenHeight / rows;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				if (mouseX > gridWidth * j && mouseX < gridWidth * (j + 1) && mouseY > gridHeight * i && mouseY < gridHeight * (i + 1)) {
+					{
+						mouseClicked = true;
+						if (cellGrid[i][j] == CellState::dead)
+						{
+							cellGrid[i][j] = CellState::alive;
+						}
+						else
+						{
+							cellGrid[i][j] = CellState::dead;
+						}
+					}
+				}
+			}
+		}
+	}
+
 }
 
+/// <summary>
+/// Checks the status of the surronding cells to see how many alive neighbor each cell has
+/// </summary>
 void ofApp::processCells()
 {
 	int screenWidth = ofGetWidth();
@@ -227,6 +216,9 @@ void ofApp::processCells()
 	cellGrid = cellGridCopy;
 }
 
+/// <summary>
+/// Has a 35% chance of making each cell alive.
+/// </summary>
 void ofApp::randomizeCells()
 {
 	srand(time(NULL));
@@ -243,13 +235,59 @@ void ofApp::randomizeCells()
 		}
 	}
 }
-
+/// <summary>
+/// Clears all of the alive cells from the grid
+/// </summary>
 void ofApp::clearGrid()
 {
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < columns; j++) {
 			cellGrid[i][j] = CellState::dead;
 		}
+	}
+}
+
+/// <summary>
+/// Draws the cells to the grid
+/// </summary>
+void ofApp::drawCells()
+{
+	int screenWidth = ofGetWidth();
+	int screenHeight = ofGetHeight();
+	int mouseX = ofGetMouseX();
+	int mouseY = ofGetMouseY();
+
+	int gridWidth = screenWidth / columns;
+	int gridHeight = screenHeight / rows;
+	ofSetColor(0, 255, 0);
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
+			if (cellGrid[i][j] == CellState::alive)
+			{
+				ofDrawRectangle(j * gridWidth, i * gridHeight, gridWidth, gridHeight);
+			}
+		}
+	}
+}
+
+/// <summary>
+/// Draws the grid lines
+/// </summary>
+void ofApp::drawGrid()
+{
+	ofSetColor(128);
+	int screenWidth = ofGetWidth();
+	int screenHeight = ofGetHeight();
+	int mouseX = ofGetMouseX();
+	int mouseY = ofGetMouseY();
+
+	int gridWidth = screenWidth / columns;
+	int gridHeight = screenHeight / rows;
+	for (int i = 1; i <= rows; i++) {
+		ofDrawLine(0, i * gridHeight, screenWidth, i * gridHeight);
+	}
+	for (int i = 1; i <= columns; i++) {
+		ofDrawLine(i * gridWidth, 0, i * gridWidth, screenHeight);
 	}
 }
 
