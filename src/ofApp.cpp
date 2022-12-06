@@ -1,21 +1,26 @@
 #include "ofApp.h"
 
 const int rows = 65;
-const int columns = 50;
+const int columns = 65;
 
+//Cell state enum
 enum class CellState { alive, dead };
-//Cannot be declared in header like this must be made global
+//The cell grid
 std::vector<std::vector<CellState> > cellGrid(
 	rows,
 	std::vector<CellState>(columns, CellState::dead));
 
-
+/// <summary>
+/// Sets the background colour and loads the UI font.
+/// </summary>
 void ofApp::setup() {
 	ofBackground(255);
 	uiFont.loadFont("Sigmar.ttf", 30);
 }
 
-//--------------------------------------------------------------
+/// <summary>
+/// Proccesses cells if the game is being played currently
+/// </summary>
 void ofApp::update() {
 	if(playing)
 	{
@@ -23,7 +28,9 @@ void ofApp::update() {
 	}
 }
 
-//--------------------------------------------------------------
+/// <summary>
+/// Draws the ui, cells and grid to the screen.
+/// </summary>
 void ofApp::draw() {
 	drawCells();
 	drawGrid();
@@ -40,6 +47,11 @@ void ofApp::draw() {
 void ofApp::keyPressed(int key){
 }
 
+/// <summary>
+/// Checks if the mouse is hovering any of the buttons when it is moved.
+/// </summary>
+/// <param name="x">The x position of the mouse.</param>
+/// <param name="y">The y position of the mouse.</param>
 void ofApp::mouseMoved(int x, int y) {
 	playButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
 	stepButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
@@ -47,7 +59,12 @@ void ofApp::mouseMoved(int x, int y) {
 	clearButton.checkHover(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) });
 }
 
-//--------------------------------------------------------------
+/// <summary>
+/// Checks if any of the buttons are cells are being hovered by the mouse when it is released if so their individual functionality is played.
+/// </summary>
+/// <param name="x">The x position of the mouse.</param>
+/// <param name="y">The y position of the mouse.</param>
+/// <param name="button">The mouse button.</param>
 void ofApp::mouseReleased(int x, int y, int button) {
 	if (playButton.checkClick(Coordinate2D{ static_cast<float>(x), static_cast<float>(y) }))
 	{
@@ -125,7 +142,6 @@ void ofApp::processCells()
 			bool belowLeftCell = i + 1 < rows && j - 1 >= 0;
 			bool belowRightCell = i + 1 < rows && j + 1 < columns;
 
-
 			//Above
 			if(aboveCell)
 			{
@@ -134,7 +150,6 @@ void ofApp::processCells()
 					aliveInRadius++;
 				} 
 			}
-
 			//Below
 			if(belowCell)
 			{
